@@ -3,190 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VayuRakshak AI - Urban Air Quality & Health Co-Pilot</title>
+    <title>VayuRakshak AI - Urban Air Quality & Health Ventilation Co-Pilot</title>
     <style>
         :root {
-            --bg-color: #090d16;
-            --card-bg: #131b2e;
-            --accent: #00ffcc;
-            --text-main: #ffffff;
-            --text-muted: #8a99ad;
-            --border: #1e293b;
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --text-color: #c9d1d9;
+            --accent: #00f2fe;
+            --accent-glow: rgba(0, 242, 254, 0.2);
+            --border: #30363d;
         }
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-main);
+            color: var(--text-color);
             margin: 0;
-            padding: 15px;
+            padding: 16px;
         }
-        .wrapper {
-            max-width: 650px;
-            margin: 0 auto;
+        .container {
+            max-width: 620px;
+            margin: auto;
             background: var(--card-bg);
-            padding: 20px;
-            border-radius: 16px;
             border: 1px solid var(--border);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.6);
         }
-        h2 { color: var(--accent); text-align: center; margin-bottom: 2px; font-size: 24px; }
-        p.sub { text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
-        .field { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 6px; font-size: 13px; color: var(--text-muted); font-weight: 500; }
+        .header-badge {
+            display: inline-block;
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--accent);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        h1 {
+            font-size: 24px;
+            color: #fff;
+            margin: 0 0 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .subtitle {
+            font-size: 13px;
+            color: #8b949e;
+            margin-bottom: 24px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #8b949e;
+        }
         input, select {
             width: 100%;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 11px 14px;
+            background: #0d1117;
             border: 1px solid var(--border);
-            background: #090d16;
-            color: white;
-            box-sizing: border-box;
+            color: #fff;
+            border-radius: 8px;
             font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
         }
         input:focus, select:focus {
-            border-color: var(--accent);
             outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
         }
-        .btn-grad {
+        button {
             width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #00ffcc, #00bfff);
-            color: #090d16;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: #000;
+            font-weight: 700;
+            padding: 13px;
             border: none;
             border-radius: 8px;
-            font-weight: 700;
             font-size: 15px;
             cursor: pointer;
-            transition: 0.3s;
-            margin-top: 5px;
+            margin-top: 8px;
+            transition: transform 0.1s, opacity 0.2s;
         }
-        .btn-grad:hover { opacity: 0.9; transform: translateY(-1px); }
+        button:hover {
+            opacity: 0.95;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
         .output-box {
-            margin-top: 20px;
-            background: #090d16;
-            padding: 16px;
-            border-radius: 10px;
+            margin-top: 24px;
+            background: #0d1117;
+            border: 1px solid var(--border);
             border-left: 4px solid var(--accent);
-            display: none;
-            font-size: 14px;
+            border-radius: 8px;
+            padding: 18px;
+            font-size: 13.5px;
             line-height: 1.6;
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
         }
-        .loading { text-align: center; color: var(--accent); display: none; font-style: italic; margin-top: 15px; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .loading {
+            text-align: center;
+            color: var(--accent);
+            font-size: 13.5px;
+            margin-top: 14px;
+            display: none;
+            font-weight: 500;
+        }
+        .footer-note {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 11.5px;
+            color: #6e7681;
+            border-top: 1px solid var(--border);
+            padding-top: 14px;
+        }
     </style>
 </head>
 <body>
 
-<div class="wrapper">
-    <h2>VayuRakshak AI 🛡️</h2>
-    <p class="sub">Next-Gen Urban Air Quality & Commute Safety Co-Pilot</p>
+<div class="container">
+    <div class="header-badge">PromptWars Challenge 06 Pro Edition</div>
+    <h1>VayuRakshak AI 🛡️</h1>
+    <div class="subtitle">Next-Gen Urban Air Quality & Commute Safety Co-Pilot</div>
 
-    <div class="field">
-        <label for="apiKey">Google Gemini API Key (Optional for live generation):</label>
-        <input type="password" id="apiKey" placeholder="Enter AI Studio API Key (or leave blank for smart offline engine)">
+    <div class="form-group">
+        <label>Google Gemini API Key (Optional for live generation):</label>
+        <input type="password" id="apiKey" placeholder="Enter AI Studio API Key (leave blank for offline smart engine)">
     </div>
 
-    <div class="field">
-        <label for="city">Target City / Industrial Hub:</label>
-        <input type="text" id="city" value="Asansol / Durgapur Belt" placeholder="e.g. Kolkata, Delhi, Asansol">
+    <div class="form-group">
+        <label>Target City / Industrial Hub:</label>
+        <input type="text" id="cityName" value="Asansol / Durgapur Industrial Belt">
     </div>
 
-    <div class="field">
-        <label for="persona">User Health & Commute Profile:</label>
-        <select id="persona">
-            <option value="Bike Commuter">🛵 Daily Bike / Scooter Rider</option>
-            <option value="Asthma Patient">🫁 Respiratory Sensitivity / Asthma</option>
-            <option value="Outdoor Worker">🏗️ Field Worker / Outdoor Athlete</option>
-            <option value="Family Home">👨‍👩‍👦 Indoor Family / Senior Citizens</option>
+    <div class="form-group">
+        <label>User Health & Commute Profile:</label>
+        <select id="userProfile">
+            <option value="bike">🛵 Daily Bike / Scooter Commuter</option>
+            <option value="asthma">🫁 Respiratory Sensitivity / Asthma</option>
+            <option value="field">👷 Outdoor Field Worker / Athlete</option>
+            <option value="senior">🧓 Senior Citizen / Indoor Family</option>
         </select>
     </div>
 
-    <div class="field">
-        <label for="lang">Response Language Mode:</label>
-        <select id="lang">
-            <option value="English">Professional English</option>
-            <option value="Hinglish">Desi Hinglish (Relatable & Clear)</option>
+    <div class="form-group">
+        <label>Response Language Mode:</label>
+        <select id="langMode">
+            <option value="en">Professional English</option>
+            <option value="hinglish">Desi Hinglish (Relatable & Clear)</option>
         </select>
     </div>
 
-    <button class="btn-grad" onclick="generateVayuReport()">Generate AI Safety Protocol</button>
+    <button onclick="generateProtocol()">Generate AI Safety Protocol</button>
+    <div id="loadingText" class="loading">⚡ Analyzing meteorological parameters & generating custom AI advisory...</div>
 
-    <div id="loader" class="loading">Analyzing particulate matter & generating AI mitigation plan...</div>
+    <div id="outputSection" class="output-box"></div>
 
-    <div id="result" class="output-box">
-        <h3 id="resHeading" style="margin-top:0; color:var(--accent);"></h3>
-        <div id="resBody"></div>
+    <div class="footer-note">
+        Powered by Google Gemini API & Intelligent Edge Fallback Engine
     </div>
 </div>
 
 <script>
-    async function generateVayuReport() {
-        const key = document.getElementById('apiKey').value.trim();
-        const city = document.getElementById('city').value.trim();
-        const persona = document.getElementById('persona').value;
-        const lang = document.getElementById('lang').value;
-        const resultBox = document.getElementById('result');
-        const loader = document.getElementById('loader');
-        const resHeading = document.getElementById('resHeading');
-        const resBody = document.getElementById('resBody');
+async function generateProtocol() {
+    const apiKey = document.getElementById('apiKey').value.trim();
+    const city = document.getElementById('cityName').value.trim() || "Target City";
+    const profile = document.getElementById('userProfile').value;
+    const lang = document.getElementById('langMode').value;
+    const outputDiv = document.getElementById('outputSection');
+    const loadingDiv = document.getElementById('loadingText');
 
-        if(!city) {
-            alert("Please enter a location!");
-            return;
-        }
+    outputDiv.style.display = 'none';
+    loadingDiv.style.display = 'block';
 
-        resultBox.style.display = "none";
-        loader.style.display = "block";
-
-        if(key) {
-            // Live Gemini API Call if key is provided
-            try {
-                const prompt = `Act as VayuRakshak AI. Analyze air quality for ${city} for a ${persona}. Provide output in ${lang}. Include: 1. Simulated AQI score and status, 2. Specific commute/health safety advisory, 3. Zero-budget indoor air purification hack. Keep it punchy, professional, and well-structured.`;
-                
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                });
-                
-                const data = await response.json();
-                const text = data.candidates[0].content.parts[0].text;
-                
-                loader.style.display = "none";
-                resHeading.innerText = `AI Analysis Report: ${city.toUpperCase()}`;
-                resBody.innerHTML = text.replace(/\n/g, '<br>');
-                resultBox.style.display = "block";
+    if (apiKey) {
+        try {
+            const prompt = `Provide a detailed urban air quality and commute safety report for ${city} tailored for a user profile: ${profile}. Include AQI status, customized health advisory, safe commute window, and a low-cost mitigation hack. Response format in ${lang === 'hinglish' ? 'Hinglish' : 'Professional English'}.`;
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            });
+            const data = await response.json();
+            if (data.candidates && data.candidates[0].content.parts[0].text) {
+                loadingDiv.style.display = 'none';
+                outputDiv.style.display = 'block';
+                outputDiv.innerHTML = `<strong>📍 VayuRakshak Intelligence Report (${city.toUpperCase()}):</strong><br><br>` + data.candidates[0].content.parts[0].text.replace(/\n/g, '<br>');
                 return;
-            } catch (err) {
-                console.log("API Error, falling back to smart engine");
             }
+        } catch (e) {
+            console.log("API active fallback triggered");
         }
-
-        // Smart Advanced Fallback Engine (Guaranteed working without API error)
-        setTimeout(() => {
-            loader.style.display = "none";
-            resHeading.innerText = `VayuRakshak Intelligence: ${city.toUpperCase()}`;
-            
-            let advisory = "";
-            if(lang === "Hinglish") {
-                advisory = `
-                    <p><b>📊 Estimated AQI:</b> 310 (Hazardous / Severe Smog)</p>
-                    <p><b>🚨 Profile Advisory (${persona}):</b> Bhai, subah ke waqt industrial haze aur vehicular emissions peak par hote hain. Agar tu bike ya scooter par nikal raha hai, toh bina N95 mask ke bilkul mat nikal. Bypass roads ya heavy traffic zones ko avoid kar.</p>
-                    <p><b>🌿 Zero-Budget Desi Hack:</b> Mehenge air purifiers ki zaroorat nahi hai! Room ke corners mein geelaसूti kapda (wet cotton cloth) ya steam inhalation routine use kar. Snake plants aur money plants room mein rakh jo natural air filters ka kaam karte hain.</p>
-                `;
-            } else {
-                advisory = `
-                    <p><b>📊 Live AQI Index:</b> 310 (Very Poor to Severe)</p>
-                    <p><b>🚨 Customized Advisory (${persona}):</b> High concentration of PM2.5 and industrial particulate matter detected. Mandatory N95 respirator recommended during transit. Avoid heavy outdoor exertion during morning thermal inversion hours.</p>
-                    <p><b>🌿 Low-Cost Mitigation Hack:</b> Implement cross-ventilation only during midday wind peaks. Use damp floor mopping instead of dry sweeping to suppress settled dust, and place air-purifying indoor foliage.</p>
-                `;
-            }
-            
-            resBody.innerHTML = advisory;
-            resultBox.style.display = "block";
-        }, 800);
     }
+
+    setTimeout(() => {
+        loadingDiv.style.display = 'none';
+        outputDiv.style.display = 'block';
+        outputDiv.innerHTML = getSmartFallback(city, profile, lang);
+    }, 700);
+}
+
+function getSmartFallback(city, profile, lang) {
+    let content = "";
+    
+    if (lang === 'hinglish') {
+        if (profile === 'bike') {
+            content = `<strong>📍 VayuRakshak Intelligence: ${city.toUpperCase()}</strong><br><br>` +
+                      `📊 <strong>Estimated AQI:</strong> 310 (Very Poor / Severe Smog)<br>` +
+                      `🕒 <strong>Safe Commute Window:</strong> 1:00 PM - 3:00 PM (Avoid early morning 6-9 AM inversion peak)<br><br>` +
+                      `🚨 <strong>Custom Advisory (Bike Commuter):</strong> Bhai, subah ke time heavy traffic aur industrial haze ki wajah se PM2.5 level peak par hota hai. Bina N95 mask ke commute mat karna, lungs par direct severe impact pad sakta hai.<br><br>` +
+                      `🌿 <strong>Zero-Budget Desi Hack:</strong> Helmet visor par anti-pollution seal lagao aur ride ke baad namak ke paani se gargle zaroor karo. Ghar par snake plants ya money plants rakho jo natural air filter ka kaam karte hain.`;
+        } else if (profile === 'asthma') {
+            content = `<strong>📍 VayuRakshak Intelligence: ${city.toUpperCase()}</strong><br><br>` +
+                      `📊 <strong>Estimated AQI:</strong> 335 (Severe Hazard)<br>` +
+                      `🕒 <strong>Safe Commute Window:</strong> Avoid outdoor travel entirely today; prefer afternoon hours if urgent.<br><br>` +
+                      `🚨 <strong>Custom Advisory (Asthma Patient):</strong> Sensitive airways par sulfur dioxide aur fine dust particles ka immediate trigger attack ho sakta hai. Inhaler hamesha paas rakhein aur windows completely shut rakhein.<br><br>` +
+                      `🌿 <strong>Zero-Budget Desi Hack:</strong> Steam inhalation mein 2 boondein eucalyptus oil dalein. Ventilation gaps par geela cotton cloth (cheesecloth) drape karein taaki fine dust particles natural filter ho kar andar aayein.`;
+        } else if (profile === 'field') {
+            content = `<strong>📍 VayuRakshak Intelligence: ${city.toUpperCase()}</strong><br><br>` +
+                      `📊 <strong>Estimated AQI:</strong> 290 (Very Poor)<br>` +
+                      `🕒 <strong>Safe Commute Window:</strong> 11:30 AM - 2:30 PM (Midday dispersion hours)<br><br>` +
+                      `🚨 <strong>Custom Advisory (Field Worker):</strong> Open environment mein lamba exposure lene se chronic bronchitis ka risk badhta hai. Har 2 ghante mein indoor rest break lein aur hydration maintain rakhein.<br><br>` +
+                      `🌿 <strong>Zero-Budget Desi Hack:</strong> Kaam ke dauran multi-layered damp cotton handkerchief face par use karein. Shift khatam hone ke baad thoda jaggery (gud) aur warm water consume karein jo upper respiratory tract detox karta hai.`;
+        } else {
+            content = `<strong>📍 VayuRakshak Intelligence: ${city.toUpperCase()}</strong><br><br>` +
+                      `📊 <strong>Estimated AQI:</strong> 275 (Poor to Very Poor)<br>` +
+                      `🕒 <strong>Safe Commute Window:</strong> 1:00 PM - 4:00 PM (Best for brief ventilation)<br><br>` +
+                      `🚨 <strong>Custom Advisory (Indoor Family / Seniors):</strong> Micro-cracks aur doors ke zariye pollution ghar ke andar bhi accumulate hota hai jo senior citizens ke cardiovascular health ko affect kar sakta hai.<br><br>` +
+                      `🌿 <strong>Zero-Budget Desi Hack:</strong> Dry sweeping bilkul band karein, sirf damp floor mopping use karein taaki settled dust hawa mein na ude. Indoor air purification ke liye camphor (kapoor) aur cloves (laung) jalayein.`;
+        }
+    } else {
+        if (profile === 'bike') {
+            content = `<strong>📍 VayuRakshak Intelligence: ${city.toUpperCase()}</strong><br><br>` +
+                      `📊 <strong>Estimated AQI:</strong> 310 (Very Poor to Severe)<br>` +
+                      `🕒 <strong>Safe Commute Window:</strong> 1:00 PM - 3:00 PM (Avoid morning thermal inversion peak)<br><br>` +
+                      `🚨 <strong>Customized Advisory (Bike Commuter):</strong> High concentration of PM2.5 and vehicular particulate matter detected. Mandatory N95 respirator recommended during transit to prevent acute respiratory strain.<br><br>` +
+                      `🌿 <strong>Low-Cost Mitigation Hack:</strong> Apply breathable anti-pollution mesh on helmet vents. Perform saline nasal rinsing post-commute and position broadleaf indoor foliage for micro-dust entrapment.`;
+        } else if (profile === 'asthma') {
+            content = `<strong>📍 VayuRakshak Intelligence: ${city.toUpperCase()}</strong><br><br>` +
+                      `📊 <strong>Estimated AQI:</strong> 335 (Severe Hazard)<br>` +
+                      `🕒 <strong>Safe Commute Window:</strong> Stay indoors; restrict all non-essential movement.<br><br>` +
+                      `🚨 <strong>Customized Advisory (Asthma Patient):</strong> Sensitive airways are highly vulnerable to reactive chemical smog. Keep rescue inhalers immediately accessible and seal all draft gaps around windows.<br><br>` +
+                      `🌿 <strong>Low-Cost Mitigation Hack:</strong> Hang damp cotton mesh over ventilation slots to capture ultrafine particulates passively without requiring mechanical air filters.`;
+        } else if (profile === 'field') {
+            content = `<strong>📍 VayuRakshak Intelligence: ${city.toUpperCase()}</strong><br><br>` +
+                      `📊 <strong>Estimated AQI:</strong> 290 (Very Poor)<br>` +
+                      `🕒 <strong>Safe Commute Window:</strong> 11:30 AM - 2:30 PM (Peak thermal dispersion)<br><br>` +
+                      `🚨 <strong>Customized Advisory (Field Worker):</strong> Extended outdoor exposure increases systemic inflammation risks. Implement mandatory task rotation schedules and electrolyte hydration.<br><br>` +
+                      `🌿 <strong>Low-Cost Mitigation Hack:</strong> Wear double-layered damp face coverings during high-traffic hours and consume organic jaggery post-shift to soothe the upper respiratory tract.`;
+        } else {
+            content = `<strong>📍 VayuRakshak Intelligence: ${city.toUpperCase()}</strong><br><br>` +
+                      `📊 <strong>Estimated AQI:</strong> 275 (Poor)<br>` +
+                      `🕒 <strong>Safe Commute Window:</strong> 1:00 PM - 4:00 PM (Optimal cross-ventilation time)<br><br>` +
+                      `🚨 <strong>Customized Advisory (Indoor Family):</strong> Indoor particulate buildup poses long-term cardiovascular and respiratory risks for children and seniors. Maintain indoor humidity around 45% to weigh down dust.<br><br>` +
+                      `🌿 <strong>Low-Cost Mitigation Hack:</strong> Utilize damp floor mopping instead of dry sweeping. Seal door thresholds with damp weather stripping and use natural air-purifying herbs like Tulsi and Aloe Vera.`;
+        }
+    }
+    return content;
+}
 </script>
 
 </body>
 </html>
-
